@@ -3,10 +3,10 @@ import GameContent from "./GameContent";
 
 function Game() {
   return (
-    <div className="flex flex-col h-screen">
+    <main className="flex flex-col relative p-2">
       <Header />
       <GameContent />
-    </div>
+    </main>
   );
 }
 
