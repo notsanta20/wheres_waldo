@@ -1,42 +1,76 @@
-function GameContent() {
-  function handleMouseClick(e: object) {
-    const menu = document.querySelector(`.menu`);
-    const menuX: number = e.pageX;
-    const menuY: number = e.pageY;
-    const clickX: number = e.screenX;
-    const clickY: number = e.screenY;
+import { useState } from "react";
+import axios from "axios";
+
+function GameContent({ chars, setChars }: { chars: {} }) {
+  const [coord, setCoord] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  function handleMouseClick(e: React.ChangeEvent<HTMLInputElement>) {
+    const menu: HTMLElement | null = document.querySelector(`.menu`);
+    const { offsetX, offsetY } = e.nativeEvent;
+
+    const clickCoords = {
+      x: Math.round((offsetX / e.target.width) * 1920),
+      y: Math.round((offsetY / e.target.height) * 3858),
+    };
+    console.log(clickCoords.x, clickCoords.y);
 
     menu.style.display = `flex`;
-    menu.style.top = `${menuY - 30}px`;
-    menu.style.left = `${menuX - 40}px`;
+    menu.style.top = `${e.pageY - 32}px`;
+    menu.style.left = `${e.pageX - 60}px`;
 
     menu.addEventListener(`mouseleave`, () => {
       hideMenu(menu);
     });
 
-    console.log(clickX, clickY);
+    setCoord(clickCoords);
   }
 
   function hideMenu(item) {
     item.style.display = `none`;
   }
 
+  function checkCoords(x: number, y: number, char: string) {
+    const baseURL = import.meta.env.VITE_LOCAL_URL;
+    const menu = document.querySelector(`.menu`);
+    hideMenu(menu);
+
+    axios
+      .get(`${baseURL}/checkCoord?x=${x}&y=${y}&char=${char}`)
+      .then((res) => {
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
-    <main
-      className="flex-1 flex justify-center items-center w-[250%] lg:w-[100%]"
-      onClick={(e) => {
-        handleMouseClick(e);
-      }}
-    >
-      <div className="">
-        <img src="/assets/main.jpg" alt="game art" className="w-full" />
-        <div className="h-[300p] menu hidden flex-col items-center gap-3 absolute">
-          <div className="w-[4rem] h-[4rem] border-3 border-red-500"></div>
-          <div className="flex flex-col gap-2 bg-white rounded-lg p-3">
-            <button>CHAR 1</button>
-            <button>CHAR 2</button>
-            <button>CHAR 3</button>
-          </div>
+    <main className="flex-1 flex justify-center items-center w-[250%] lg:w-[100vw]">
+      <img
+        src="/assets/main.jpg"
+        alt="game art"
+        className="w-full h-auto"
+        onClick={(e) => {
+          handleMouseClick(e);
+        }}
+      />
+      <div className="h-[300p] menu hidden flex-col items-center gap-3 absolute">
+        <div className="w-[4rem] h-[4rem] border-3 border-red-500"></div>
+        <div className="flex flex-col gap-2 bg-white rounded-lg p-3">
+          {chars.map((char) => (
+            <button
+              key={char.name}
+              onClick={(e) => {
+                e.stopPropagation();
+                checkCoords(coord.x, coord.y, char.name);
+              }}
+            >
+              {char.name}
+            </button>
+          ))}
         </div>
       </div>
     </main>
