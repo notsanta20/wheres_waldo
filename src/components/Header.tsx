@@ -1,4 +1,4 @@
-function Header({ chars }) {
+function Header({ chars, time }) {
   return (
     <header className="header text-2xl font-semibold p-3 fixed rounded-lg flex justify-evenly items-center w-screen bg-black text-white">
       <div>
@@ -10,7 +10,7 @@ function Header({ chars }) {
                   src={"/assets/" + char.name + ".png"}
                   alt={char.name}
                   className={
-                    "w-[75px] h-[75px]" + (char.found ? " opacity-[.5]" : "")
+                    "w-[50px] h-[50px]" + (char.found ? " opacity-[.5]" : "")
                   }
                 />
               </li>
@@ -18,7 +18,7 @@ function Header({ chars }) {
           })}
         </ul>
       </div>
-      <div>Timer</div>
+      <div className="w-[200px] text-xl">Time: {time}</div>
     </header>
   );
 }
