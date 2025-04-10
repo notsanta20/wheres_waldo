@@ -9,6 +9,14 @@ function Game() {
       name: `Captain Price`,
       found: false,
     },
+    {
+      name: `Popeye`,
+      found: false,
+    },
+    {
+      name: `Deadpool`,
+      found: false,
+    },
   ]);
   const [time, setTime] = useState({
     startTime: new Date(),
