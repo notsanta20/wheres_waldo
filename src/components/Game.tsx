@@ -15,11 +15,11 @@ function Game() {
     currentTime: 0,
   });
 
-  useEffect(() => {
-    setInterval(() => {
-      timer(time, setTime);
-    }, 10);
-  }, []);
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     timer(time, setTime);
+  //   }, 10);
+  // }, []);
 
   return (
     <main className="flex flex-col relative p-2">
