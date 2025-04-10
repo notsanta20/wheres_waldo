@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+body {
+  font-family: "Chakra Petch";
+}
+
 .alert {
   top: 150px;
   right: 30px;
