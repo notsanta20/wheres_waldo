@@ -1,8 +1,20 @@
 import { useState } from "react";
 import axios from "axios";
 import alert from "../../utils/alert";
+import Box from "../../utils/Box";
+import PopUpMenu from "../../utils/PopUpMenu";
 
-function GameContent({ chars, setChars }: { chars: {} }) {
+function GameContent({
+  chars,
+  setChars,
+  score,
+  setWinner,
+}: {
+  chars: {};
+  setChars: Function;
+  score: number;
+  setWinner: Function;
+}) {
   const [coord, setCoord] = useState({
     x: 0,
     y: 0,
@@ -19,7 +31,7 @@ function GameContent({ chars, setChars }: { chars: {} }) {
 
     menu.style.display = `flex`;
     menu.style.top = `${e.pageY - 32}px`;
-    menu.style.left = `${e.pageX - 60}px`;
+    menu.style.left = `${e.pageX - 93}px`;
 
     menu.addEventListener(`mouseleave`, () => {
       hideMenu(menu);
@@ -50,7 +62,11 @@ function GameContent({ chars, setChars }: { chars: {} }) {
               }
             })
           );
+          score.current += 1;
           alert(res.data.message);
+          if (score.current === 3) {
+            setWinner(true);
+          }
         } else {
           alert(res.data.message);
         }
@@ -61,34 +77,22 @@ function GameContent({ chars, setChars }: { chars: {} }) {
   }
 
   return (
-    <main className="flex-1 flex justify-center items-center w-[250%] lg:w-[100vw]">
+    <main className="flex-1 flex justify-center items-center overflow-scroll">
       <img
         src="/assets/main.jpg"
         alt="game art"
-        className="w-full h-auto"
+        className="w-[2500px] lg:w-full h-auto"
         onClick={(e) => {
           handleMouseClick(e);
         }}
       />
       <div className="h-[300p] menu hidden flex-col items-center gap-3 absolute">
         <div className="w-[4rem] h-[4rem] border-3 border-red-500"></div>
-        <div className="flex flex-col gap-2 bg-white rounded-lg p-3">
-          {chars.map((char) => {
-            if (!char.found) {
-              return (
-                <button
-                  key={char.name}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    checkCoords(coord.x, coord.y, char.name);
-                  }}
-                >
-                  {char.name}
-                </button>
-              );
-            }
-          })}
-        </div>
+        <Box
+          children={
+            <PopUpMenu chars={chars} checkCoords={checkCoords} coord={coord} />
+          }
+        />
       </div>
     </main>
   );

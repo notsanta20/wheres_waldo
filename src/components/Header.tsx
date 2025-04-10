@@ -1,7 +1,7 @@
 import Box from "../../utils/Box";
 
 function Timer({ time }) {
-  return <div className="w-[200px] p-1 text-xl">Time: {time}</div>;
+  return <div className="w-[200px] p-1 text-xl text-center">Time: {time}</div>;
 }
 
 function Icons({ chars }) {
@@ -11,7 +11,7 @@ function Icons({ chars }) {
         return (
           <li
             key={char.name}
-            className={char.found && "border-2 border-red-600"}
+            className={char.found ? "border-2 border-red-600" : ""}
           >
             <img
               src={"/assets/" + char.name + ".png"}
@@ -27,7 +27,7 @@ function Icons({ chars }) {
 
 function Header({ chars, time }) {
   return (
-    <header className="header text-2xl font-semibold p-3 fixed rounded-lg grid grid-cols-2 justify-items-center w-screen">
+    <header className="header text-2xl font-semibold p-3 fixed rounded-lg grid grid-rows-2 lg:grid-cols-2 lg:justify-items-center gap-2 w-screen">
       <Box children={<Icons chars={chars} />} />
       <Box children={<Timer time={time} />} />
     </header>
