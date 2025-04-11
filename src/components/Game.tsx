@@ -4,58 +4,14 @@ import timer from "../../utils/timer";
 import { useEffect, useRef, useState } from "react";
 import Box from "../../utils/Box";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router";
 
-function onSubmit(e, setError: Function, time: string) {
-  e.preventDefault();
-  const name: string = e.target[0].value;
-  const baseURL = import.meta.env.VITE_LOCAL_URL;
-
-  const data = {
-    name: name,
-    time: time,
-  };
-
-  axios
-    .post(`${baseURL}/leaderBoard`)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-      setError(`Internal server error, try again`);
-    });
-}
-
-function GetNameModal({ time }) {
-  const [error, setError] = useState(``);
-
-  return (
-    <div className="flex flex-col gap-3 py-6 px-10 text-2xl">
-      <div className="font-medium">
-        Congrats You Found all the Characters, Enter your Name
-      </div>
-      <form
-        className="flex flex-col gap-2"
-        onSubmit={(e) => {
-          onSubmit(e, setError, time);
-        }}
-      >
-        <div className="flex gap-2">
-          <input
-            type="text"
-            name="name"
-            id="name"
-            className="flex-1 border-1 border-white rounded-lg py-2 px-3"
-          />
-          <button className="bg-gray-600 rounded-lg py-2 px-3 cursor-pointer">
-            Submit
-          </button>
-        </div>
-        <div className="h-[35px] text-red-600 font-sm">{error}</div>
-      </form>
-    </div>
-  );
-}
+const schema = z.object({
+  name: z.string().min(1, { message: `Name must be atleast 1 charatcter` }),
+});
 
 function Game() {
   const score = useRef(0);
@@ -75,6 +31,15 @@ function Game() {
       found: false,
     },
   ]);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   const [time, setTime] = useState({
     startTime: new Date(),
@@ -93,6 +58,52 @@ function Game() {
       clearInterval(timerInterval.current);
     };
   }, [winner]);
+
+  function onSubmitForm(data: {}) {
+    const baseURL: string = import.meta.env.VITE_LOCAL_URL;
+
+    axios
+      .post(`${baseURL}/leaderBoard`, data)
+      .then((res) => {
+        navigate(`/leaderBoard`);
+      })
+      .catch((err) => {
+        setError(`Internal server error, try again`);
+      });
+  }
+
+  function GetNameModal({ time }: { time: string }) {
+    return (
+      <div className="flex flex-col gap-3 py-6 px-10 text-2xl">
+        <div className="font-medium">
+          Congrats You Found all the Characters, Enter your Name
+        </div>
+        <form
+          className="flex flex-col gap-2"
+          onSubmit={handleSubmit((data) => {
+            data.time = time.currentTime;
+            onSubmitForm(data);
+          })}
+        >
+          <div className="flex gap-2">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="flex-1 border-1 border-white rounded-lg py-2 px-3"
+              {...register(`name`)}
+            />
+            <button className="bg-gray-600 rounded-lg py-2 px-3 cursor-pointer">
+              Submit
+            </button>
+          </div>
+          <div className="h-[35px] text-red-600 font-sm">
+            {typeof errors.name === `undefined` ? "" : errors.name.message}
+          </div>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <main className="flex flex-col relative p-2">
