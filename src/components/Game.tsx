@@ -63,8 +63,6 @@ function Game() {
     };
   }, [winner]);
 
-  console.log(winner);
-
   function onSubmitForm(data: {}) {
     const baseURL: string = import.meta.env.VITE_LOCAL_URL;
 

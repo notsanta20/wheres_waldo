@@ -26,8 +26,10 @@ function LeaderBoard() {
   function LeaderBoard() {
     if (data) {
       return (
-        <div className="w-[50vw] h-[60vh] overflow-scroll p-3">
-          <h1 className="p-2 text-3xl font-bold text-center">LeaderBoard</h1>
+        <div className="w-[80vw] lg:w-[50vw] h-[60vh] overflow-scroll p-3">
+          <h1 className="p-2 text-2xl lg:text-3xl font-bold text-center">
+            LeaderBoard
+          </h1>
           <ul className="flex flex-col gap-2">
             <li className="flex gap-5 text-amber-400 rounded-lg p-2 text-2xl font-semibold">
               <div className="flex-1">Player Name</div>

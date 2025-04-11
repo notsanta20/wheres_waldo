@@ -32,7 +32,7 @@ function Icons({ chars }: { chars: Array<charObj> }) {
 
 function Header({ chars, time }: { chars: Array<charObj>; time: string }) {
   return (
-    <header className="header text-2xl font-semibold p-3 fixed rounded-lg grid grid-rows-2 lg:grid-cols-2 lg:justify-items-center gap-2 w-screen">
+    <header className="text-2xl font-semibold p-3 fixed rounded-lg grid grid-rows-2 gap-5 justify-items-center lg:grid-cols-2 lg:gap-2 w-screen">
       <Box children={<Icons chars={chars} />} />
       <Box children={<Timer time={time} />} />
     </header>

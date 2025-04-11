@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
+* {
+  cursor: url("../public/assets/cursor.svg") 37 37, auto;
+}
+
 body {
   font-family: "Chakra Petch";
 }
 
 .alert {
-  top: 150px;
+  top: 15%;
   right: 30px;
   animation: alert 0.5s cubic-bezier(0, 1.7, 0.58, 1);
 }

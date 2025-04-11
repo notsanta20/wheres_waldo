@@ -94,11 +94,11 @@ function GameContent({
   }
 
   return (
-    <main className="flex-1 flex justify-center items-center overflow-scroll">
+    <main className="flex-1 flex justify-center items-center overflow-scroll w-[250vw] lg:w-[100vw]">
       <img
         src="/assets/main.jpg"
         alt="game art"
-        className="w-[2500px] lg:w-full h-auto"
+        className=""
         onClick={(e) => {
           handleMouseClick(e);
         }}
