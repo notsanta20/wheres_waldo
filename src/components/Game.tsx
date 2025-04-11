@@ -8,7 +8,7 @@ import axios from "axios";
 function onSubmit(e, setError: Function, time: string) {
   e.preventDefault();
   const name: string = e.target[0].value;
-  const url = import.meta.env.VITE_LOCAL_URL;
+  const baseURL = import.meta.env.VITE_LOCAL_URL;
 
   const data = {
     name: name,
@@ -16,7 +16,7 @@ function onSubmit(e, setError: Function, time: string) {
   };
 
   axios
-    .post(`${url}/leaderBoard`, data)
+    .post(`${baseURL}/leaderBoard`)
     .then((res) => {
       console.log(res);
     })
@@ -26,11 +26,11 @@ function onSubmit(e, setError: Function, time: string) {
     });
 }
 
-function GetName({ time }) {
+function GetNameModal({ time }) {
   const [error, setError] = useState(``);
 
   return (
-    <div className="flex flex-col gap-3 text-pink-600 py-6 px-10 text-2xl absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+    <div className="flex flex-col gap-3 py-6 px-10 text-2xl">
       <div className="font-medium">
         Congrats You Found all the Characters, Enter your Name
       </div>
@@ -45,13 +45,13 @@ function GetName({ time }) {
             type="text"
             name="name"
             id="name"
-            className="flex-1 border-1 border-black rounded-lg py-2 px-3"
+            className="flex-1 border-1 border-white rounded-lg py-2 px-3"
           />
           <button className="bg-gray-600 rounded-lg py-2 px-3 cursor-pointer">
             Submit
           </button>
         </div>
-        <div className="h-[3px] text-red-600 font-sm">{error}</div>
+        <div className="h-[35px] text-red-600 font-sm">{error}</div>
       </form>
     </div>
   );
@@ -103,7 +103,11 @@ function Game() {
         score={score}
         setWinner={setWinner}
       />
-      {winner && <Box children={<GetName time={time} />} />}
+      {winner && (
+        <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+          <Box children={<GetNameModal time={time} />} />
+        </div>
+      )}
     </main>
   );
 }
