@@ -1,7 +1,7 @@
 import Header from "./Header";
 import GameContent from "./GameContent";
 import timer from "../../utils/timer";
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import Box from "../../utils/Box";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ const schema = z.object({
 });
 
 function Game() {
-  const score = useRef(0);
+  const score = useRef<number>(0);
   const timerInterval = useRef(0);
   const [winner, setWinner] = useState(false);
   const [chars, setChars] = useState<Array<charObj>>([
@@ -45,7 +45,6 @@ function Game() {
   } = useForm({
     resolver: zodResolver(schema),
   });
-
   const [time, setTime] = useState({
     startTime: new Date(),
     currentTime: ``,
@@ -63,6 +62,8 @@ function Game() {
       clearInterval(timerInterval.current);
     };
   }, [winner]);
+
+  console.log(winner);
 
   function onSubmitForm(data: {}) {
     const baseURL: string = import.meta.env.VITE_LOCAL_URL;
@@ -116,7 +117,7 @@ function Game() {
       <GameContent
         chars={chars}
         setChars={setChars}
-        score={score.current}
+        score={score}
         setWinner={setWinner}
       />
       {winner && (

@@ -22,7 +22,7 @@ function GameContent({
 }: {
   chars: Array<charObj>;
   setChars: Function;
-  score: number;
+  score: React.RefObject<number>;
   setWinner: Function;
 }) {
   const [coord, setCoord] = useState<coords>({
@@ -79,9 +79,9 @@ function GameContent({
               }
             })
           );
-          score += 1;
+          score.current += 1;
           alert(res.data.message);
-          if (score === 3) {
+          if (score.current === 3) {
             setWinner(true);
           }
         } else {
