@@ -2,18 +2,23 @@ import Box from "../../utils/Box";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface data {
+  id: string;
+  player: string;
+  timeTaken: string;
+}
+
 function LeaderBoard() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Array<data> | null>(null);
 
   useEffect(() => {
     const baseURL: string = import.meta.env.VITE_LOCAL_URL;
-
     axios
       .get(`${baseURL}/leaderBoard`)
       .then((res) => {
         setData(res.data.users);
       })
-      .catch((err) => {
+      .catch(() => {
         return;
       });
   }, []);
@@ -28,7 +33,7 @@ function LeaderBoard() {
               <div className="flex-1">Player Name</div>
               <div>Time</div>
             </li>
-            {data.map((d) => (
+            {data.map((d: data) => (
               <li className="flex gap-5 p-2 font-medium" key={d.id}>
                 <div className="flex-1">{d.player}</div>
                 <div>{d.timeTaken}</div>

@@ -1,4 +1,24 @@
-function PopUpMenu({ chars, checkCoords, coord }) {
+import React from "react";
+
+interface charObj {
+  name: string;
+  found: boolean;
+}
+
+interface coords {
+  x: number;
+  y: number;
+}
+
+function PopUpMenu({
+  chars,
+  checkCoords,
+  coord,
+}: {
+  chars: Array<charObj>;
+  checkCoords: Function;
+  coord: coords;
+}) {
   return (
     <ul>
       {chars.map((char) => {

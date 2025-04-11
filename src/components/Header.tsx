@@ -1,13 +1,18 @@
 import Box from "../../utils/Box";
 
-function Timer({ time }) {
+interface charObj {
+  name: string;
+  found: boolean;
+}
+
+function Timer({ time }: { time: string }) {
   return <div className="w-[200px] p-1 text-xl text-center">Time: {time}</div>;
 }
 
-function Icons({ chars }) {
+function Icons({ chars }: { chars: Array<charObj> }) {
   return (
     <ul className="p-2 flex gap-5 h-[59px] w-[250px] justify-center items-center">
-      {chars.map((char: {}) => {
+      {chars.map((char: charObj) => {
         return (
           <li
             key={char.name}
@@ -25,7 +30,7 @@ function Icons({ chars }) {
   );
 }
 
-function Header({ chars, time }) {
+function Header({ chars, time }: { chars: Array<charObj>; time: string }) {
   return (
     <header className="header text-2xl font-semibold p-3 fixed rounded-lg grid grid-rows-2 lg:grid-cols-2 lg:justify-items-center gap-2 w-screen">
       <Box children={<Icons chars={chars} />} />

@@ -4,24 +4,34 @@ import alert from "../../utils/alert";
 import Box from "../../utils/Box";
 import PopUpMenu from "../../utils/PopUpMenu";
 
+interface charObj {
+  name: string;
+  found: boolean;
+}
+
+interface coords {
+  x: number;
+  y: number;
+}
+
 function GameContent({
   chars,
   setChars,
   score,
   setWinner,
 }: {
-  chars: {};
+  chars: Array<charObj>;
   setChars: Function;
   score: number;
   setWinner: Function;
 }) {
-  const [coord, setCoord] = useState({
+  const [coord, setCoord] = useState<coords>({
     x: 0,
     y: 0,
   });
 
-  function handleMouseClick(e: React.ChangeEvent<HTMLInputElement>) {
-    const menu: HTMLElement | null = document.querySelector(`.menu`);
+  function handleMouseClick(e: React.MouseEvent<HTMLElement>) {
+    const menu: HTMLDivElement | null = document.querySelector(`.menu`);
     const { offsetX, offsetY } = e.nativeEvent;
 
     const clickCoords = {
@@ -29,25 +39,32 @@ function GameContent({
       y: Math.round((offsetY / e.target.height) * 3858),
     };
 
-    menu.style.display = `flex`;
-    menu.style.top = `${e.pageY - 32}px`;
-    menu.style.left = `${e.pageX - 93}px`;
+    if (menu) {
+      menu.style.display = `flex`;
+      menu.style.top = `${e.pageY - 32}px`;
+      menu.style.left = `${e.pageX - 93}px`;
 
-    menu.addEventListener(`mouseleave`, () => {
-      hideMenu(menu);
-    });
+      menu.addEventListener(`mouseleave`, () => {
+        hideMenu(menu);
+      });
+    }
 
     setCoord(clickCoords);
   }
 
-  function hideMenu(item) {
-    item.style.display = `none`;
+  function hideMenu(item: HTMLDivElement | null) {
+    if (item) {
+      item.style.display = `none`;
+    }
   }
 
   function checkCoords(x: number, y: number, char: string) {
-    const baseURL = import.meta.env.VITE_LOCAL_URL;
-    const menu = document.querySelector(`.menu`);
-    hideMenu(menu);
+    const baseURL: string = import.meta.env.VITE_LOCAL_URL;
+    const menu: HTMLDivElement | null = document.querySelector(`.menu`);
+
+    if (menu) {
+      hideMenu(menu);
+    }
 
     axios
       .get(`${baseURL}/checkCoord?x=${x}&y=${y}&char=${char}`)
@@ -62,9 +79,9 @@ function GameContent({
               }
             })
           );
-          score.current += 1;
+          score += 1;
           alert(res.data.message);
-          if (score.current === 3) {
+          if (score === 3) {
             setWinner(true);
           }
         } else {

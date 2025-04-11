@@ -9,15 +9,20 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 
+interface charObj {
+  name: string;
+  found: boolean;
+}
+
 const schema = z.object({
-  name: z.string().min(1, { message: `Name must be atleast 1 charatcter` }),
+  name: z.string().min(1, { message: `Name must be at least 1 character` }),
 });
 
 function Game() {
   const score = useRef(0);
   const timerInterval = useRef(0);
   const [winner, setWinner] = useState(false);
-  const [chars, setChars] = useState([
+  const [chars, setChars] = useState<Array<charObj>>([
     {
       name: `Captain Price`,
       found: false,
@@ -43,7 +48,7 @@ function Game() {
 
   const [time, setTime] = useState({
     startTime: new Date(),
-    currentTime: 0,
+    currentTime: ``,
   });
 
   useEffect(() => {
@@ -64,15 +69,15 @@ function Game() {
 
     axios
       .post(`${baseURL}/leaderBoard`, data)
-      .then((res) => {
+      .then(() => {
         navigate(`/leaderBoard`);
       })
-      .catch((err) => {
-        setError(`Internal server error, try again`);
+      .catch(() => {
+        setError(`name`, { message: `Internal server error, try again` });
       });
   }
 
-  function GetNameModal({ time }: { time: string }) {
+  function GetNameModal({ time }: { time: { currentTime: string } }) {
     return (
       <div className="flex flex-col gap-3 py-6 px-10 text-2xl">
         <div className="font-medium">
@@ -94,7 +99,7 @@ function Game() {
               {...register(`name`)}
             />
             <button className="bg-gray-600 rounded-lg py-2 px-3 cursor-pointer">
-              Submit
+              {isSubmitting ? `Submitting` : `Submit`}
             </button>
           </div>
           <div className="h-[35px] text-red-600 font-sm">
@@ -111,7 +116,7 @@ function Game() {
       <GameContent
         chars={chars}
         setChars={setChars}
-        score={score}
+        score={score.current}
         setWinner={setWinner}
       />
       {winner && (
