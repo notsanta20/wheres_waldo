@@ -12,7 +12,7 @@ function LeaderBoard() {
   const [data, setData] = useState<Array<data> | null>(null);
 
   useEffect(() => {
-    const baseURL: string = import.meta.env.VITE_HOST_URL;
+    const baseURL: string = "https://wheres-waldo-api-rmb7.onrender.com";
     axios
       .get(`${baseURL}/leaderBoard`)
       .then((res) => {

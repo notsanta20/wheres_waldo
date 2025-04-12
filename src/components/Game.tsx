@@ -73,7 +73,7 @@ function Game() {
   }, [winner]);
 
   function onSubmitForm(data: { name: string }, timeTaken: string) {
-    const baseURL: string = import.meta.env.VITE_HOST_URL;
+    const baseURL: string = "https://wheres-waldo-api-rmb7.onrender.com";
     const newData: formData = {
       name: data.name,
       time: timeTaken,

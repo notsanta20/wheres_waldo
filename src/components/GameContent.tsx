@@ -67,7 +67,7 @@ function GameContent({
   }
 
   function checkCoords(x: number, y: number, char: string) {
-    const baseURL: string = import.meta.env.VITE_HOST_URL;
+    const baseURL: string = "https://wheres-waldo-api-rmb7.onrender.com";
     const menu: HTMLDivElement | null = document.querySelector(`.menu`);
 
     if (menu) {
