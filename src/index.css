@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 * {
-  cursor: url("../public/assets/cursor.svg") 37 37, auto;
+  cursor: url("/assets/cursor.svg") 37 37, auto;
 }
 
 body {

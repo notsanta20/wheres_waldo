@@ -1,8 +1,8 @@
 import Header from "./Header";
 import GameContent from "./GameContent";
 import timer from "../../utils/timer";
-import { RefObject, useEffect, useRef, useState } from "react";
-import Box from "../../utils/Box";
+import { useEffect, useRef, useState } from "react";
+import Box from "./Box";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,13 +14,22 @@ interface charObj {
   found: boolean;
 }
 
+interface formData {
+  name: string;
+  time: string;
+}
+
+type formValues = {
+  name: string;
+};
+
 const schema = z.object({
   name: z.string().min(1, { message: `Name must be at least 1 character` }),
 });
 
 function Game() {
   const score = useRef<number>(0);
-  const timerInterval = useRef(0);
+  const timerInterval = useRef<ReturnType<typeof setInterval> | number>(0);
   const [winner, setWinner] = useState(false);
   const [chars, setChars] = useState<Array<charObj>>([
     {
@@ -42,7 +51,7 @@ function Game() {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<formValues>({
     resolver: zodResolver(schema),
   });
   const [time, setTime] = useState({
@@ -63,11 +72,14 @@ function Game() {
     };
   }, [winner]);
 
-  function onSubmitForm(data: {}) {
+  function onSubmitForm(data: { name: string }, timeTaken: string) {
     const baseURL: string = import.meta.env.VITE_LOCAL_URL;
-
+    const newData: formData = {
+      name: data.name,
+      time: timeTaken,
+    };
     axios
-      .post(`${baseURL}/leaderBoard`, data)
+      .post(`${baseURL}/leaderBoard`, newData)
       .then(() => {
         navigate(`/leaderBoard`);
       })
@@ -85,17 +97,17 @@ function Game() {
         <form
           className="flex flex-col gap-2"
           onSubmit={handleSubmit((data) => {
-            data.time = time.currentTime;
-            onSubmitForm(data);
+            const getTime: string = time.currentTime;
+            onSubmitForm(data, getTime);
           })}
         >
           <div className="flex gap-2">
             <input
+              {...register("name")}
               type="text"
               name="name"
-              id="name"
+              id="playerName"
               className="flex-1 border-1 border-white rounded-lg py-2 px-3"
-              {...register(`name`)}
             />
             <button className="bg-gray-600 rounded-lg py-2 px-3 cursor-pointer">
               {isSubmitting ? `Submitting` : `Submit`}

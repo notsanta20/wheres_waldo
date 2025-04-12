@@ -1,4 +1,4 @@
-import Box from "../../utils/Box";
+import Box from "./Box";
 
 interface charObj {
   name: string;

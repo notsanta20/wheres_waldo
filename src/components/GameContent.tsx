@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import alert from "../../utils/alert";
-import Box from "../../utils/Box";
-import PopUpMenu from "../../utils/PopUpMenu";
+import Box from "./Box";
+import PopUpMenu from "./PopUpMenu";
 
 interface charObj {
   name: string;
@@ -12,6 +12,11 @@ interface charObj {
 interface coords {
   x: number;
   y: number;
+}
+
+interface myEvent extends EventTarget {
+  width: number;
+  height: number;
 }
 
 function GameContent({
@@ -30,13 +35,16 @@ function GameContent({
     y: 0,
   });
 
-  function handleMouseClick(e: React.MouseEvent<HTMLElement>) {
+  function handleMouseClick(e: React.MouseEvent) {
     const menu: HTMLDivElement | null = document.querySelector(`.menu`);
     const { offsetX, offsetY } = e.nativeEvent;
+    const target = e.target as myEvent;
+    let targetWidth: number = target.width;
+    let targetHeight: number = target.height;
 
     const clickCoords = {
-      x: Math.round((offsetX / e.target.width) * 1920),
-      y: Math.round((offsetY / e.target.height) * 3858),
+      x: Math.round((offsetX / targetWidth) * 1920),
+      y: Math.round((offsetY / targetHeight) * 3858),
     };
 
     if (menu) {

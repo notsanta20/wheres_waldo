@@ -1,4 +1,4 @@
-import Box from "../../utils/Box";
+import Box from "./Box";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

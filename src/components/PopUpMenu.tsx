@@ -1,5 +1,3 @@
-import React from "react";
-
 interface charObj {
   name: string;
   found: boolean;

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import Box from "../../utils/Box";
+import Box from "./Box";
 
 function Index() {
   function Home() {
