@@ -3,7 +3,7 @@
   <p align="center">
     Where's Waldo is a game where we need to find waldo in a crowded place. similar to where's waldo here you need to find 3 characters (Captain Price, Popeye, Deadpool). Have fun finding them.
     <br />
-    <a href="" target="_blank">Live Demo</a>
+    <a href="https://wheres-waldo-lemon.vercel.app/" target="_blank">Live Demo</a>
   </p>
 </div>
 <br>
